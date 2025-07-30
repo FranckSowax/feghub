@@ -26,7 +26,8 @@ import {
   ChevronDown,
   Star,
   Eye,
-  ArrowRight
+  ArrowRight,
+  Factory
 } from 'lucide-react'
 
 // Mock data for the social feed
@@ -202,6 +203,10 @@ export default function HomePage() {
                       <ShoppingCart className="h-4 w-4 mr-3" />
                       Marketplace
                     </Link>
+                    <Link href="/sourcing" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <Factory className="h-4 w-4 mr-3" />
+                      Sourcing
+                    </Link>
                     <Link href="/auth/login" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <LogOut className="h-4 w-4 mr-3" />
                       Connexion
@@ -290,9 +295,9 @@ export default function HomePage() {
                     <GraduationCap className="h-6 w-6 text-feg-green mb-1" />
                     <span className="text-xs font-medium">Formation</span>
                   </Link>
-                  <Link href="/supply-chain" className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 text-center">
-                    <Truck className="h-6 w-6 text-feg-orange mb-1" />
-                    <span className="text-xs font-medium">Supply Chain</span>
+                  <Link href="/sourcing" className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 text-center">
+                    <Factory className="h-6 w-6 text-feg-orange mb-1" />
+                    <span className="text-xs font-medium">Sourcing</span>
                   </Link>
                 </div>
               </div>

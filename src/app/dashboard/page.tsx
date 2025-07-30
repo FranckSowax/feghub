@@ -19,7 +19,8 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
+  Factory
 } from 'lucide-react'
 import { 
   BarChart, 
@@ -38,12 +39,12 @@ import {
 
 // Mock data for charts
 const monthlyRevenue = [
-  { month: 'Jan', revenue: 45000, orders: 120 },
-  { month: 'Fév', revenue: 52000, orders: 135 },
-  { month: 'Mar', revenue: 48000, orders: 128 },
-  { month: 'Avr', revenue: 61000, orders: 162 },
-  { month: 'Mai', revenue: 55000, orders: 145 },
-  { month: 'Jun', revenue: 67000, orders: 178 },
+  { month: 'Jan', revenue: 29500000, orders: 120 },
+  { month: 'Fév', revenue: 34100000, orders: 135 },
+  { month: 'Mar', revenue: 31500000, orders: 128 },
+  { month: 'Avr', revenue: 40000000, orders: 162 },
+  { month: 'Mai', revenue: 36100000, orders: 145 },
+  { month: 'Jun', revenue: 43900000, orders: 178 },
 ]
 
 const industryData = [
@@ -69,7 +70,7 @@ export default function DashboardPage() {
   const stats = [
     {
       name: 'Chiffre d\'affaires',
-      value: '€328,000',
+      value: '215,200,000 XAF',
       change: '+12.5%',
       changeType: 'increase',
       icon: DollarSign,
@@ -252,7 +253,7 @@ export default function DashboardPage() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip formatter={(value) => [`€${value.toLocaleString()}`, 'Revenus']} />
+                    <Tooltip formatter={(value) => [`${(Number(value) / 1000000).toFixed(1)}M XAF`, 'Revenus']} />
                     <Bar dataKey="revenue" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
