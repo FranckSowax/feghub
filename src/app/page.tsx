@@ -30,6 +30,119 @@ import {
   Factory
 } from 'lucide-react'
 
+// Mock data for notifications
+const notifications = [
+  {
+    id: 1,
+    type: 'order',
+    title: 'Nouvelle commande reçue',
+    message: 'Commande #CMD-2024-001 de TechGabon Solutions',
+    time: '5 min',
+    read: false,
+    icon: ShoppingCart,
+    color: 'text-green-600'
+  },
+  {
+    id: 2,
+    type: 'message',
+    title: 'Nouveau message',
+    message: 'CIMGABON vous a envoyé un message',
+    time: '15 min',
+    read: false,
+    icon: MessageCircle,
+    color: 'text-blue-600'
+  },
+  {
+    id: 3,
+    type: 'event',
+    title: 'Événement à venir',
+    message: 'Salon du BTP Gabon 2024 dans 3 jours',
+    time: '1h',
+    read: true,
+    icon: Calendar,
+    color: 'text-purple-600'
+  }
+]
+
+// Mock data for quick stats
+const quickStats = [
+  {
+    label: 'Commandes ce mois',
+    value: '127',
+    change: '+12%',
+    trend: 'up',
+    icon: ShoppingCart,
+    color: 'text-green-600'
+  },
+  {
+    label: 'Nouveaux membres',
+    value: '45',
+    change: '+8%',
+    trend: 'up',
+    icon: Users,
+    color: 'text-blue-600'
+  },
+  {
+    label: 'CA mensuel',
+    value: '2.4M XAF',
+    change: '+15%',
+    trend: 'up',
+    icon: TrendingUp,
+    color: 'text-feg-green'
+  },
+  {
+    label: 'Formations actives',
+    value: '18',
+    change: '+3',
+    trend: 'up',
+    icon: GraduationCap,
+    color: 'text-feg-orange'
+  }
+]
+
+// Mock data for trending topics
+const trendingTopics = [
+  { id: 1, topic: '#DigitalisationGabon', posts: 156, growth: '+25%' },
+  { id: 2, topic: '#BTPGabon2024', posts: 89, growth: '+18%' },
+  { id: 3, topic: '#InnovationTech', posts: 67, growth: '+12%' },
+  { id: 4, topic: '#EconomieVerte', posts: 45, growth: '+8%' },
+  { id: 5, topic: '#FormationPro', posts: 34, growth: '+15%' }
+]
+
+// Mock data for upcoming events
+const upcomingEvents = [
+  {
+    id: 1,
+    title: 'Salon du BTP Gabon 2024',
+    date: '2024-02-15',
+    time: '09:00',
+    location: 'Centre de Conférences, Libreville',
+    attendees: 250,
+    category: 'Construction',
+    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=300&h=200&fit=crop'
+  },
+  {
+    id: 2,
+    title: 'Forum Innovation Technologique',
+    date: '2024-02-20',
+    time: '14:00',
+    location: 'Université Omar Bongo, Libreville',
+    attendees: 180,
+    category: 'Technologie',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=300&h=200&fit=crop'
+  },
+  {
+    id: 3,
+    title: 'Atelier Formation Digitale',
+    date: '2024-02-25',
+    time: '10:00',
+    location: 'FEG Digital Hub, Port-Gentil',
+    attendees: 120,
+    category: 'Formation',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop'
+  }
+]
+
 // Mock data for the social feed
 const posts = [
   {
@@ -135,6 +248,8 @@ const events = [
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState('feed')
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -160,7 +275,9 @@ export default function HomePage() {
                 </div>
                 <input
                   type="text"
-                  placeholder="Rechercher..."
+                  placeholder="Rechercher entreprises, produits, formations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-feg-green focus:border-feg-green text-sm"
                 />
               </div>
@@ -173,10 +290,54 @@ export default function HomePage() {
                 <Search className="h-5 w-5" />
               </button>
               
-              <button className="p-2 text-gray-400 hover:text-gray-600 relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">3</span>
-              </button>
+              <div className="relative">
+                <button 
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="p-2 text-gray-400 hover:text-gray-600 relative"
+                >
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                    {notifications.filter(n => !n.read).length}
+                  </span>
+                </button>
+                
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                    <div className="p-4 border-b border-gray-200">
+                      <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.map((notification) => {
+                        const IconComponent = notification.icon
+                        return (
+                          <div key={notification.id} className={`p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
+                            !notification.read ? 'bg-blue-50' : ''
+                          }`}>
+                            <div className="flex items-start space-x-3">
+                              <div className={`p-2 rounded-full bg-gray-100 ${notification.color}`}>
+                                <IconComponent className="h-4 w-4" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900">{notification.title}</p>
+                                <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                                <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                              </div>
+                              {!notification.read && (
+                                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <div className="p-3 border-t border-gray-200">
+                      <button className="text-sm text-feg-green hover:text-feg-green/80 font-medium">
+                        Voir toutes les notifications
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
               
               <button className="hidden sm:block p-2 text-gray-400 hover:text-gray-600">
                 <MessageCircle className="h-5 w-5" />
@@ -250,6 +411,31 @@ export default function HomePage() {
           </div>
         </div>
       </header>
+
+      {/* Quick Stats Bar */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {quickStats.map((stat, index) => {
+              const IconComponent = stat.icon
+              return (
+                <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className={`p-2 rounded-lg bg-gray-100 ${stat.color}`}>
+                    <IconComponent className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold text-gray-900">{stat.value}</p>
+                    <p className="text-xs text-gray-600">{stat.label}</p>
+                    <p className={`text-xs font-medium ${
+                      stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
+                    }`}>{stat.change}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
@@ -401,10 +587,68 @@ export default function HomePage() {
           {/* Right Sidebar - Outils & Infos - Masqué sur mobile */}
           <div className="hidden lg:block lg:col-span-2">
             <div className="space-y-4">
-              {/* Quick Stats */}
+              {/* Trending Topics */}
               <div className="bg-white rounded-lg shadow p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 text-sm flex items-center">
                   <TrendingUp className="h-4 w-4 mr-1" />
+                  Tendances
+                </h3>
+                <div className="space-y-3">
+                  {trendingTopics.map((topic) => (
+                    <div key={topic.id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded cursor-pointer">
+                      <div>
+                        <p className="text-sm font-medium text-feg-green">{topic.topic}</p>
+                        <p className="text-xs text-gray-600">{topic.posts} publications</p>
+                      </div>
+                      <span className="text-xs text-green-600 font-medium">{topic.growth}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Upcoming Events */}
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="font-semibold text-gray-900 mb-3 text-sm flex items-center">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  Événements à venir
+                </h3>
+                <div className="space-y-3">
+                  {upcomingEvents.slice(0, 2).map((event) => (
+                    <div key={event.id} className="border border-gray-200 rounded-lg p-3 hover:border-feg-green transition-colors cursor-pointer">
+                      <div className="flex items-start space-x-3">
+                        <img 
+                          src={event.image} 
+                          alt={event.title}
+                          className="w-12 h-12 rounded-lg object-cover"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-gray-900 line-clamp-2">{event.title}</h4>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <span className="text-xs text-feg-green font-medium">{event.date}</span>
+                            <span className="text-xs text-gray-500">{event.time}</span>
+                          </div>
+                          <div className="flex items-center space-x-1 mt-1">
+                            <MapPin className="h-3 w-3 text-gray-400" />
+                            <span className="text-xs text-gray-600 truncate">{event.location}</span>
+                          </div>
+                          <div className="flex items-center space-x-1 mt-1">
+                            <Users className="h-3 w-3 text-gray-400" />
+                            <span className="text-xs text-gray-600">{event.attendees} participants</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <button className="w-full text-sm text-feg-green hover:text-feg-green/80 font-medium py-2">
+                    Voir tous les événements
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="font-semibold text-gray-900 mb-3 text-sm flex items-center">
+                  <BarChart3 className="h-4 w-4 mr-1" />
                   Stats FEG
                 </h3>
                 <div className="space-y-3">
