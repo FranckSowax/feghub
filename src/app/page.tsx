@@ -783,9 +783,9 @@ export default function HomePage() {
             <GraduationCap className="h-5 w-5 text-feg-green mb-1" />
             <span className="text-xs font-medium text-gray-600">Formation</span>
           </Link>
-          <Link href="/supply-chain" className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50">
-            <Truck className="h-5 w-5 text-feg-orange mb-1" />
-            <span className="text-xs font-medium text-gray-600">Supply Chain</span>
+          <Link href="/sourcing" className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50">
+            <Factory className="h-5 w-5 text-feg-orange mb-1" />
+            <span className="text-xs font-medium text-gray-600">Sourcing</span>
           </Link>
         </div>
       </div>
